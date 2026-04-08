@@ -1,0 +1,69 @@
+name: support-email-triage
+version: "1.0.0"
+description: >
+  An OpenEnv environment where an AI agent triages customer support emails.
+  The agent must classify urgency, identify the issue category, extract key
+  information, and draft an appropriate response — simulating a real-world
+  Tier-1 support workflow.
+
+author: AI Avengers
+contact: mdarifabdullah2007@gmail.com
+
+tasks:
+  - id: task_easy
+    name: Classify Email Urgency
+    description: >
+      Given a customer support email, classify its urgency level as one of:
+      low, medium, high, or critical.
+    difficulty: easy
+    score_range: [0.0, 1.0]
+
+  - id: task_medium
+    name: Categorize and Extract
+    description: >
+      Given a customer support email, identify the issue category (billing,
+      technical, account, shipping, general) AND extract the customer's name
+      and primary complaint in one structured JSON response.
+    difficulty: medium
+    score_range: [0.0, 1.0]
+
+  - id: task_hard
+    name: Full Triage and Draft Response
+    description: >
+      Given a customer support email, perform full triage: classify urgency,
+      categorize the issue, extract key details, and draft a professional,
+      empathetic response email that addresses the customer's concern.
+    difficulty: hard
+    score_range: [0.0, 1.0]
+
+observation_space:
+  type: object
+  properties:
+    email_id:
+      type: string
+    subject:
+      type: string
+    body:
+      type: string
+    sender:
+      type: string
+    timestamp:
+      type: string
+    task_id:
+      type: string
+    instructions:
+      type: string
+
+action_space:
+  type: object
+  properties:
+    response:
+      type: string
+      description: The agent's answer or drafted text for the current task.
+
+reward:
+  type: float
+  range: [0.0, 1.0]
+  description: >
+    Graded by task-specific rubric. Partial credit is awarded for partially
+    correct answers to encourage meaningful progress signals.
